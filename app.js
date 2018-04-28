@@ -17,11 +17,12 @@ class GuestBook {
   }
 
   add() {
-    let nickname = $(`${this.container} input[name=nickname]`);
-    let comment = $(`${this.container} input[name=comment]`);
-    this.pushComment(this.comments, nickname.val(), comment.val());
-    this.clearInput(nickname);
-    this.clearInput(comment);
+    console.log('adjkdshjkdshfkjdhsfkjsdhkfjhdskjfhd');
+    let nicknameLink = $(`${this.container} input[name=nickname]`);
+    let commentLink = $(`${this.container} input[name=comment]`);
+    this.pushComment(this.comments, nicknameLink.val(), commentLink.val());
+    this.clearInput(nicknameLink);
+    this.clearInput(commentLink);
     this.checkButton();
     this.saveComments();
     this.renderComment(this.comments);
@@ -31,7 +32,7 @@ class GuestBook {
     list.push({
       user: nickname,
       comment: comment,
-      vote: 0
+      vote: 0,
     });
   }
 
@@ -39,33 +40,30 @@ class GuestBook {
     inputField.val('');
   }
 
-  validate(input) {
-    if (input == "") {
-      return false
-    } else {
-      return true
-    };
+  validate(text) {
+    return (text == "") ? false : true;
   }
 
   renderComment(list) {
     let html = '';
     for (let i of list) {
-      html += this.templateItem(i.user, i.comment, i.liked, i.disliked);
+      html += this.templateItem(i.user, i.comment, i.vote);
     }
     $(`${this.container} #comment-list`).html(html);
   }
 
-  templateItem(user, comment, like, dislike) {
+  templateItem(user, comment, vote) {
     return `
-      <div class="item container-fluid">
+      <div class="item container-fluid ${ (vote < 0) ? 'disliked' : ''}  ${ (vote > 0) ? 'liked' : ''}">
         <div class="row">
-          <div class="col-8">
-            <span class="user">${user}</span>:
-            <span class="user">${comment}</span>
+          <div class="sidebar align-self-center">
+            <button data-action="like" class = "btn btn-outline-primary">Like</button>
+            <span class = "vote">${vote}</span>
+            <button data-action="dislike" class = "btn btn-outline-danger">DisLike</button>
           </div>
-          <div class="col-4 justify-content-md-center">
-            <button data-action="like" class = "btn ${like ? 'btn-primary' : 'btn-outline-primary'}">Like</button>
-            <button data-action="dislike" class = "btn ${dislike ? 'btn-danger' : 'btn-outline-danger'}">DisLike</button>
+          <div class="content">
+            <span class="user">${user}</span>:
+            <span class="comment">${comment}</span>
           </div>
         </div>
       </div>
@@ -88,14 +86,14 @@ class GuestBook {
     };
   }
 
-  toggleLike(element) {
+  upVote(element) {
     let elementId = this.findElementId(element);
-    this.comments[elementId]['liked'] = !this.comments[elementId]['liked'];
+    this.comments[elementId]['vote']++;
   }
 
-  toggleDislike(element) {
+  downVote(element) {
     let elementId = this.findElementId(element);
-    this.comments[elementId]['disliked'] = !this.comments[elementId]['disliked'];
+    this.comments[elementId]['vote']--;
   }
 
   findElementId(element) {
@@ -106,8 +104,8 @@ class GuestBook {
   initHandlers() {
     $(document).on("submit", `${this.container} form`,
                    (element) => {
-                      this.add();
-                      element.preventDefault();
+                     element.preventDefault();
+                     this.add();
                     });
     $(document).on("keyup", `${this.container} input[name=nickname]`,
                    () => {
@@ -119,13 +117,13 @@ class GuestBook {
                     });
     $(document).on("click", `${this.container} button[data-action=like]`,
                    (e) => {
-                    this.toggleLike(e);
+                    this.upVote(e);
                     this.saveComments();
                     this.renderComment(this.comments);
                   });
-     $(document).on("click", `${this.container} button[data-action=dislike]`,
+    $(document).on("click", `${this.container} button[data-action=dislike]`,
                    (e) => {
-                    this.toggleDislike(e);
+                    this.downVote(e);
                     this.saveComments();
                     this.renderComment(this.comments);
                   });

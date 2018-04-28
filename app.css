@@ -19,3 +19,70 @@ form {
 .item .btn-outline-primary:hover {
   background-color: #87c1ff;
 }
+.vote {
+  width: 35px;
+  display: inline-block;
+  text-align: right;
+  padding: 0 5px;
+}
+
+
+
+.disliked {
+  opacity: 0.7;
+  background-color: #fbe8ea;
+}
+
+.liked {
+  background-color: #eef6ff;
+}
+
+@media (max-width: 500px) {
+  input[name=nickname] {
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  input[name=comment] {
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  button[data-action=addComment] {
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  .content {
+    margin: 5px;
+  }
+  .sidebar {
+    width: 100%;
+    text-align: center;
+  }
+
+  .item {
+    border-bottom: 1px solid #000;
+  }
+}
+
+@media (min-width: 501px) {
+  input[name=nickname] {
+    width: 130px;
+  }
+
+  input[name=comment] {
+    width: 200px;
+  }
+
+  .content {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 57%;
+    flex: 0 0 57%;
+    max-width: 57%;
+  }
+  .sidebar {
+    width: 200px;
+    text-align: center;
+  }
+}
