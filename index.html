@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GuestBook</title>
+    <meta charset="UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="app.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.css">
+  </head>
+  <body>
+    <div id="success">
+      <h1>Interview 2018 04 28</h1>
+    </div>
+    <div id="guest-book">
+      <form>
+        <input type = "text" name = "nickname" placeholder = "nickname"/>
+        <input type = "text" name = "comment" placeholder = "comment"/>
+        <button data-action = "addComment" class = "btn btn-success">comment</button>
+      </form>
+      <div id="comment-list"></div>
+    </div>
+  <script src="app.js"></script>
+  </body>
+</html>

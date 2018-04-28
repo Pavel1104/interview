@@ -1,0 +1,21 @@
+#guest-book {
+  margin: 15px;
+}
+form {
+  border: 4px double black;
+  background: lightyellow;
+  padding: 10px;
+}
+.item {
+  background: lightyellow;
+  padding: 10px 0 15px 0;
+}
+.item .user {
+  font-weight: bold;
+}
+.item .btn-outline-danger:hover {
+  background-color: #ffa6af;
+}
+.item .btn-outline-primary:hover {
+  background-color: #87c1ff;
+}
