@@ -61,9 +61,9 @@ class GuestBook {
   }
 
   add() {
-    let nicknameLink = $(`${this.container} input[name=nickname]`);
-    let commentLink = $(`${this.container} input[name=comment]`);
-    this.pushComment(this.comments, nicknameLink.val(), commentLink.val());
+    let nicknameLink = `${this.container} input[name=nickname]`;
+    let commentLink = `${this.container} input[name=comment]`;
+    this.pushComment(this.comments, $(nicknameLink).val(), $(commentLink).val());
     this.clearInput(nicknameLink);
     this.clearInput(commentLink);
     this.checkButton();
@@ -79,8 +79,8 @@ class GuestBook {
     });
   }
 
-  clearInput(inputField) {
-    inputField.val('');
+  clearInput(inputFieldLink) {
+    $(inputFieldLink).val('');
   }
 
   validate(text) {
