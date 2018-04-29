@@ -1,23 +1,66 @@
 class GuestBook {
-  constructor(targetBlock) {
+  constructor(targetBlock, url) {
     this.container = targetBlock;
-    this.storageKey = `${this.container}-local-storage`;
-    this.comments = this.getComments();
+    this.apiURL = url;
+    this.getComments();
     this.initHandlers();
     this.checkButton();
-    this.renderComment(this.comments);
+  }
+
+   httpGet(url) {
+    return new Promise(function(resolve, reject) {
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', url, true);
+
+      xhr.onload = function() {
+        if (this.status == 200) {
+          resolve(this.response);
+        } else {
+          var error = new Error(this.statusText);
+          error.code = this.status;
+          reject(error);
+        }
+      };
+
+      xhr.onerror = function() {
+        reject(new Error("Network Error"));
+      };
+
+      xhr.send();
+    });
   }
 
   getComments() {
-    return JSON.parse(localStorage.getItem(this.storageKey)) || [];
+    this.httpGet(this.apiURL + '?action=index')
+      .then(
+        response => {
+          this.comments = ($.trim(response) == '""') ? [] : JSON.parse(JSON.parse(response) );
+        },
+        error => {
+          alert(`Rejected: ${error}`);
+          console.error(`Rejected: ${error}`);
+        }
+      )
+      .then(
+        list => {
+          this.renderComment( this.comments );
+        }
+      )
   }
 
   saveComments() {
-    localStorage.setItem(this.storageKey, JSON.stringify(this.comments));
+    var xhr = new XMLHttpRequest();
+
+    var body = 'action=update&data=' + JSON.stringify(this.comments);
+
+    xhr.open("POST", this.apiURL, true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+    xhr.send(body);
   }
 
   add() {
-    console.log('adjkdshjkdshfkjdhsfkjsdhkfjhdskjfhd');
     let nicknameLink = $(`${this.container} input[name=nickname]`);
     let commentLink = $(`${this.container} input[name=comment]`);
     this.pushComment(this.comments, nicknameLink.val(), commentLink.val());
@@ -61,7 +104,7 @@ class GuestBook {
             <span class = "vote">${vote}</span>
             <button data-action="dislike" class = "btn btn-outline-danger">DisLike</button>
           </div>
-          <div class="content">
+          <div class="content align-self-center">
             <span class="user">${user}</span>:
             <span class="comment">${comment}</span>
           </div>
@@ -131,5 +174,5 @@ class GuestBook {
 }
 
 $().ready(function() {
-  new GuestBook("#guest-book");
+  new GuestBook("#guest-book", "http://localhost:8888/api.php/");
 });

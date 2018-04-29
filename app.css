@@ -1,3 +1,6 @@
+h1 {
+  text-align: center;
+}
 #guest-book {
   margin: 15px;
 }
@@ -38,6 +41,15 @@ form {
 }
 
 @media (max-width: 500px) {
+  body h1 {
+    font-size: 14px;
+    line-height: 30px;
+    vertical-align: middle;
+    margin: 0;
+  }
+  #guest-book {
+    margin-top: 0;
+  }
   input[name=nickname] {
     width: 100%;
     margin: 5px 0;
